@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView urlInput;
     ScrollView scrollView;
 
+    List<String> list;
+
     /**
      *
      * @param savedInstanceState
@@ -172,8 +174,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 xmlPullParser.nextTag();
 
                 boolean insideItem = false;
-
-                List<String> list = new ArrayList<>();
+                list= new ArrayList<>();
 
                 int eventType = xmlPullParser.getEventType();
 
@@ -202,21 +203,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     } else if (eventType == XmlPullParser.END_TAG && xmlPullParser.getName().equalsIgnoreCase("item")) {
 
                         insideItem = false;
+                        info = titles + "\n \n" + descriptions + "\n \n" + links + "\n \n" + "Date Published: " + "\n" + pubDate + "\n \n" + "___________________________________________" + "\n \n";
+                        list.add(info);
                     }
                     eventType = xmlPullParser.next();
-                    info = titles + "\n \n" + descriptions + "\n \n" + links + "\n \n" + "Date Published: " + "\n" + pubDate + "\n \n" + "___________________________________________" + "\n \n";
-                    list.add(info);
-
-                    for (int i = 0; i < list.size(); i++) {
-                            result = list.get(i);
-                            i++;
-                    }
                 }
 
             } catch (IOException ae) {
                 Log.e("MyTag", "ioexception");
             } catch (XmlPullParserException e) {
                 e.printStackTrace();
+            }
+
+            for (int i = 0; i < list.size(); i++) {
+                result += list.get(i);
+                i++;
             }
 
             MainActivity.this.runOnUiThread(new Runnable() {
